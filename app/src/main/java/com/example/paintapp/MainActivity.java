@@ -21,6 +21,7 @@ import android.widget.Toast;
 import android.Manifest;
 
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             else {
                 requestPermission();
             }
+            saveDrawingToDatabase();
         });
     }
 
@@ -87,6 +89,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    private void saveDrawingToDatabase() {
+        Bitmap bitmap = paintView.getBitmap();
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        boolean isSaved = dbHelper.saveImage(bitmap);
+
+        if (isSaved) {
+            Toast.makeText(this, "Saved to Database", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Failed to Save to Database", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+//    private void displayDatabaseContents() {
+//        DatabaseHelper dbHelper = new DatabaseHelper(this);
+//        ArrayList<Bitmap> images = dbHelper.getAllImages();
+//
+//        if (!images.isEmpty()) {
+//            // Log the number of images in the database
+//            Toast.makeText(this, "Database contains " + images.size() + " images", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "No images in database", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
     private void saveDrawingToGallery(){
         Bitmap bitmap = paintView.getBitmap();
